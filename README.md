@@ -1,4 +1,4 @@
-# MoodMate Live Link : https://rad-beijinho-e30196.netlify.app/
+# MoodMate Live Link :https://moodmate-mahisingh.netlify.app/
 
 # Weather & Mood Tracking App
 
