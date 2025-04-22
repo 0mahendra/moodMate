@@ -9,7 +9,7 @@ const moodColors = {
   happy: 'bg-yellow-400',
   sad: 'bg-blue-500',
   angry: 'bg-red-400',
-  calm: 'bg-green-500'
+  calm: 'bg-green-500',
 };
 
 const MoodCalendar = ({ onDateSelect }) => {
@@ -17,10 +17,21 @@ const MoodCalendar = ({ onDateSelect }) => {
   const [emojiMap, setEmojiMap] = useState({});
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
+  // Set theme class based on localStorage
+  let theme = localStorage.getItem("theme") || "light";
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.className = "bg-white text-black";
+    } else if (theme === "dark") {
+      document.body.className = "bg-gray-900 text-white";
+    }
+  }, [theme]);
+
+  // Load mood entries from local storage and set emoji map
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("moodEntries")) || [];
     const map = {};
-    stored.forEach(entry => {
+    stored.forEach((entry) => {
       map[entry.date] = entry.moodColor;
     });
     setEmojiMap(map);
@@ -36,9 +47,11 @@ const MoodCalendar = ({ onDateSelect }) => {
   };
 
   return (
-    <div className="bg-[#fff7f0] rounded-xl shadow p-4 w-fit mx-auto">
-       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-semibold text-gray-800">📅 {value.toLocaleString('default', { month: 'long' })}</h2>
+    <div className="bg-[#fff7f0] rounded-xl shadow p-4 w-fit mx-auto relative">
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-semibold text-gray-800">
+          📅 {value.toLocaleString("default", { month: "long" })}
+        </h2>
         <button
           className="text-gray-600 hover:text-gray-900"
           onClick={() => setShowMonthPicker(!showMonthPicker)}
@@ -75,12 +88,13 @@ const MoodCalendar = ({ onDateSelect }) => {
         }}
         tileClassName="!h-12 text-sm relative hover:bg-gray-100 rounded-xl transition-all duration-200"
       />
-      {/* <div className="flex justify-center items-center gap-4 mt-4 text-sm text-gray-700">
+      
+      <div className="flex justify-center items-center gap-4 mt-4 text-sm text-gray-700">
         <Legend color="bg-red-400" label="Angry" />
         <Legend color="bg-yellow-400" label="Happy" />
         <Legend color="bg-blue-500" label="Sad" />
         <Legend color="bg-green-500" label="Calm" />
-      </div> */}
+      </div>
     </div>
   );
 };

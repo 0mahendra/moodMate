@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 const EntryList = ({ entries }) => {
+    let theme = localStorage.getItem("theme") || "light";
+    useEffect(() => {
+                if (theme === "light") {
+                  document.body.className = "bg-white text-black";
+                } else if (theme === "dark") {
+                  document.body.className = "bg-gray-900 text-white";
+                }
+              }, [theme]);
     if (entries.length === 0) {
       return <p className="text-center text-gray-500">No entries yet.</p>;
     }

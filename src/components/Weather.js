@@ -7,14 +7,22 @@ const Weather = ({ setTemp, setWeatherData }) => {
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(!city);
   const [icon, setIcon] = useState(null);
-
+  let theme = localStorage.getItem("theme") || "light";
+  useEffect(() => {
+          
+              if (theme === "light") {
+                document.body.className = "bg-white text-black";
+              } else if (theme === "dark") {
+                document.body.className = "bg-gray-900 text-white";
+              }
+            }, [theme]);
   const fetchWeatherByCity = async (cityName) => {
     if (!cityName.trim()) return;
 
     try {
       setLoading(true);
       
-      // API call to OpenWeatherMap for weather data
+     
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=c2da22f7e0feefd96ba4d5d7466afd89`;
       const response = await fetch(url);
       
@@ -24,13 +32,13 @@ const Weather = ({ setTemp, setWeatherData }) => {
       
       const data = await response.json();
       
-      // Update states
+     
       setWeather(data);
       setCity(data.name);
       localStorage.setItem('user-city', data.name);
       setShowInput(false);
       
-      // Update parent component states
+   
       if (setTemp) setTemp(data.main.temp);
       if (setWeatherData) setWeatherData(data);
       
@@ -38,7 +46,7 @@ const Weather = ({ setTemp, setWeatherData }) => {
       const currentTime = new Date().getTime() / 1000; // Current time in seconds
       const isDayTime = currentTime > data.sys.sunrise && currentTime < data.sys.sunset;
       
-      // Set weather icon based on condition & time
+   
       const condition = data.weather[0].main;
       
       if (condition === "Clouds") {
